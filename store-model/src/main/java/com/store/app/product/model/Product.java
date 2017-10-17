@@ -25,9 +25,11 @@ public class Product {
 	@Column
 	private String description;
 
+	@NotNull
 	@Column
 	private double price;
 
+	@NotNull
 	@Column
 	private int stock;
 

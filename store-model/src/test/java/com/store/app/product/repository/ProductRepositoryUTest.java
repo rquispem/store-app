@@ -1,6 +1,11 @@
 package com.store.app.product.repository;
 
-import static com.store.app.commontests.product.ProductForTestRepository.*;
+import static com.store.app.commontests.product.ProductForTestRepository.adidas;
+import static com.store.app.commontests.product.ProductForTestRepository.allProducts;
+import static com.store.app.commontests.product.ProductForTestRepository.diesel;
+import static com.store.app.commontests.product.ProductForTestRepository.iphone;
+import static com.store.app.commontests.product.ProductForTestRepository.macbook;
+import static com.store.app.commontests.product.ProductForTestRepository.nike;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -114,7 +119,7 @@ public class ProductRepositoryUTest {
 	}
 	
 	@Test
-	public void alreadyExists() {
+	public void alreadyExistsForAdd() {
 		final Product addedProduct = 
 		dbCommandExecutor.executeCommand(() -> {
 			return productRepository.add(diesel());
@@ -124,4 +129,13 @@ public class ProductRepositoryUTest {
 		assertThat(productRepository.alreadyExists(adidas()), is(equals(false)));
 	}
 
+	@Test
+	public void existById() {
+		final Long addedProductId = dbCommandExecutor.executeCommand(() -> {
+			return productRepository.add(diesel()).getId();
+		});
+		
+		assertThat(productRepository.existsById(addedProductId), is(equalTo(true)));
+		assertThat(productRepository.existsById(999l), is(equalTo(false)));
+	}
 }

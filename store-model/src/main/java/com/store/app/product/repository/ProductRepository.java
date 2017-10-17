@@ -34,9 +34,6 @@ public class ProductRepository {
 	@SuppressWarnings("unchecked")
 	public List<Product> findAll(String orderField) {
 		return em.createQuery("Select e From Product e Order by e." + orderField).getResultList();
-		// return em.createQuery("Select e From " +
-		// Product.class.getSimpleName() + " e Order by e." +
-		// orderField).getResultList();
 	}
 
 	public boolean alreadyExists(Product product) {
@@ -55,4 +52,8 @@ public class ProductRepository {
 		return query.setMaxResults(1).getResultList().size() > 0;
 	}
 
+	public boolean existsById(Long productId) {
+		return em.createQuery("Select 1 From Product e where e.id = :id").setParameter("id", productId).setMaxResults(1)
+				.getResultList().size() > 0;
+	}
 }
