@@ -49,11 +49,17 @@ public class ProductServicesUTest {
 
 	@Test(expected = ProductExistentException.class)
 	public void addProductWithExistentName() {
-		System.out.println(diesel());
-		System.out.println(diesel());
-		System.out.println(diesel());
 		when(productRepository.alreadyExists(diesel())).thenReturn(true);
 		productServices.add(diesel());
+	}
+
+	@Test
+	public void addValidProduct() {
+		when(productRepository.alreadyExists(diesel())).thenReturn(false);
+		when(productRepository.add(diesel())).thenReturn(productWithId(diesel(), 1l));
+
+		final Product productAdded = productServices.add(diesel());
+		assertThat(productAdded.getId(), is(equalTo(1l)));
 	}
 
 	private void addProductWithInvalidName(final String name) {

@@ -29,7 +29,12 @@ public class ProductForTestRepository {
 	public static Product iphone() {
 		return new Product("Iphone", "Iphone X Gray", 999.00, 2);
 	}
-	
+
+	public static Product productWithId(final Product product, final Long id) {
+		product.setId(id);
+		return product;
+	}
+
 	public static List<Product> allProducts() {
 		return Arrays.asList(diesel(), nike(), adidas(), macbook(), iphone());
 	}

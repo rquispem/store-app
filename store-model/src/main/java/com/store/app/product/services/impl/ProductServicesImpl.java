@@ -21,13 +21,6 @@ public class ProductServicesImpl implements ProductServices {
 		return productRepository.add(product);
 	}
 
-	private void validateProduct(final Product product) {
-		ValidationUtils.validateEntityFields(validator, product);
-		if (productRepository.alreadyExists(product)) {
-			throw new ProductExistentException();
-		}
-	}
-
 	@Override
 	public void update(final Product product) {
 		// TODO Auto-generated method stub
@@ -46,4 +39,10 @@ public class ProductServicesImpl implements ProductServices {
 		return null;
 	}
 
+	private void validateProduct(final Product product) {
+		ValidationUtils.validateEntityFields(validator, product);
+		if (productRepository.alreadyExists(product)) {
+			throw new ProductExistentException();
+		}
+	}
 }
