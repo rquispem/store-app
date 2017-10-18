@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -26,17 +27,18 @@ public class Product {
 	private String description;
 
 	@NotNull
+	@Min(value = 0)
 	@Column
-	private double price;
+	private Double price;
 
 	@NotNull
 	@Column
-	private int stock;
+	private Integer stock;
 
 	public Product() {
 	}
 
-	public Product(final String name, final String description, final double price, final int stock) {
+	public Product(final String name, final String description, final Double price, final Integer stock) {
 		this.name = name;
 		this.description = description;
 		this.price = price;
@@ -67,19 +69,19 @@ public class Product {
 		this.description = description;
 	}
 
-	public double getPrice() {
+	public Double getPrice() {
 		return price;
 	}
 
-	public void setPrice(final double price) {
+	public void setPrice(final Double price) {
 		this.price = price;
 	}
 
-	public int getStock() {
+	public Integer getStock() {
 		return stock;
 	}
 
-	public void setStock(final int stock) {
+	public void setStock(final Integer stock) {
 		this.stock = stock;
 	}
 
@@ -90,22 +92,20 @@ public class Product {
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		long temp;
-		temp = Double.doubleToLongBits(price);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		result = prime * result + stock;
+		result = prime * result + ((price == null) ? 0 : price.hashCode());
+		result = prime * result + ((stock == null) ? 0 : stock.hashCode());
 		return result;
 	}
 
 	@Override
-	public boolean equals(final Object obj) {
+	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		final Product other = (Product) obj;
+		Product other = (Product) obj;
 		if (description == null) {
 			if (other.description != null)
 				return false;
@@ -121,9 +121,15 @@ public class Product {
 				return false;
 		} else if (!name.equals(other.name))
 			return false;
-		if (Double.doubleToLongBits(price) != Double.doubleToLongBits(other.price))
+		if (price == null) {
+			if (other.price != null)
+				return false;
+		} else if (!price.equals(other.price))
 			return false;
-		if (stock != other.stock)
+		if (stock == null) {
+			if (other.stock != null)
+				return false;
+		} else if (!stock.equals(other.stock))
 			return false;
 		return true;
 	}

@@ -6,6 +6,7 @@ import javax.validation.Validator;
 
 import com.store.app.common.utils.ValidationUtils;
 import com.store.app.product.exception.ProductExistentException;
+import com.store.app.product.exception.ProductNotFoundException;
 import com.store.app.product.model.Product;
 import com.store.app.product.repository.ProductRepository;
 import com.store.app.product.services.ProductServices;
@@ -23,20 +24,25 @@ public class ProductServicesImpl implements ProductServices {
 
 	@Override
 	public void update(final Product product) {
-		// TODO Auto-generated method stub
-
+		validateProduct(product);
+		if (!productRepository.existsById(product.getId())) {
+			throw new ProductNotFoundException();
+		}
+		productRepository.update(product);
 	}
 
 	@Override
 	public Product findById(final Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		Product product = productRepository.findById(id);
+		if (null == product) {
+			throw new ProductNotFoundException();
+		}
+		return product;
 	}
 
 	@Override
 	public List<Product> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return productRepository.findAll("name");
 	}
 
 	private void validateProduct(final Product product) {
